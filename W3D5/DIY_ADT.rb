@@ -30,7 +30,7 @@ class Queue
   end
 
   def enqueue(el)
-    @store.unshift(el)
+    @store.push(el)
   end
 
   def dequeue
@@ -55,16 +55,17 @@ class Map
       map_key, map_value = map
 
       if map_key == key
-        @store[index] = map_value
-      else
-        @store.push([key, value])
+        @store[index][1] = value
+        return true
       end
     end
+    @store.push([key, value])
+    true
 
   end
 
   def get(key)
-    raise "No key" if @store.any? { |arr| arr.first == key }
+    raise "No key" unless @store.any? { |arr| arr[0] == key }
 
     @store.each do |arr|
       map_key, value = arr
@@ -76,15 +77,15 @@ class Map
   end
 
   def delete(key)
-    raise "No key" if @store.any? { |arr| arr.first == key }
+    raise "No key" unless @store.any? { |arr| arr[0] == key }
 
     @store.each_with_index do |map|
-      map_key = arr.first
-      if key == map_key
+      if key == map[0] 
         @store.delete_at(index)
         return true
       end
     end
+    false
   end
 
   def show
@@ -92,6 +93,7 @@ class Map
       puts "#{map[0]} => #{map[1]}"
     end
   end
+  true
 
 end
 
